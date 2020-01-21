@@ -38,7 +38,7 @@ jobs:
             - examples
             - app
 
-            chromatic:
+  chromatic:
     <<: *defaults
     steps:
       - checkout

@@ -68,7 +68,6 @@ module.exports = {
     '/cli/test/',
     '/dist/',
     '/generators/',
-    '/dll/',
     '/__mocks__ /',
     '/__testfixtures__/',
   ],
