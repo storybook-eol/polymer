@@ -98,6 +98,3 @@ workflows:
       - test:
           requires:
             - build
-      - chromatic:
-          requires:
-            - examples
