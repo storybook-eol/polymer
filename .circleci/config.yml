@@ -1,0 +1,103 @@
+version: 2.1
+
+aliases:
+  - &defaults
+    working_directory: /tmp/storybook
+    docker:
+      - image: circleci/node:10
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore core dependencies cache
+          keys:
+            - core-dependencies-v4-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run:
+          name: Check that yarn.lock is not corrupted
+          command: yarn repo-dirty-check
+      - run:
+          name: Bootstrap
+          command: yarn bootstrap --core
+      - save_cache:
+          name: Cache core dependencies
+          key: core-dependencies-v4-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache
+            - node_modules
+            - /root/.cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+            - examples
+            - app
+
+            chromatic:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run chromatic on the pre-built polymer-cli example
+          command: yarn chromatic --storybook-build-dir="built-storybooks/polymer-cli" --app-code="o6jl9kmh0qd"
+
+  smoke-tests:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run polymer-cli (smoke test)
+          command: |
+            cd examples/polymer-cli
+            yarn storybook --smoke-test --quiet
+
+  lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Lint
+          command: yarn lint
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Test
+          command: yarn test --coverage --w2 --core
+      - persist_to_workspace:
+          root: .
+          paths:
+            - coverage
+workflows:
+  test:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - examples:
+          requires:
+            - build
+      - smoke-tests:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - chromatic:
+          requires:
+            - examples
