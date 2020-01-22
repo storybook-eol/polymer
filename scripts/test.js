@@ -73,7 +73,7 @@ const tasks = {
     name: `Output coverage reports ${chalk.gray('(coverage)')}`,
     defaultValue: false,
     option: '--coverage',
-    extraParam: '--coverage --passWithNoTests',
+    extraParam: '--coverage',
   }),
   runInBand: createOption({
     name: `Run all tests serially in the current process ${chalk.gray('(runInBand)')}`,
@@ -174,7 +174,7 @@ selection
           ? ''
           : `--projects ${jestProjects.join(' ')}`;
 
-        const cmd = `node --max_old_space_size=4096 ${jest} ${projectsParam} ${extraParams}`;
+        const cmd = `node --max_old_space_size=4096 ${jest} ${projectsParam} --passWithNoTests ${extraParams}`;
 
         spawn(cmd);
       }
