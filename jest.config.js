@@ -24,12 +24,7 @@ module.exports = {
     'react-syntax-highlighter/dist/esm/(.*)': 'react-syntax-highlighter/dist/cjs/$1',
   },
   projects: ['<rootDir>'],
-  roots: [
-    '<rootDir>/addons',
-    '<rootDir>/app',
-    '<rootDir>/lib',
-    '<rootDir>/examples/official-storybook',
-  ],
+  roots: ['<rootDir>/addons', '<rootDir>/app'],
   transform: {
     '^.+\\.stories\\.[jt]sx?$': '<rootDir>/scripts/storyshots-jest-transform.js',
     '^.+\\.[jt]sx?$': '<rootDir>/scripts/babel-jest.js',
