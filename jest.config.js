@@ -42,7 +42,7 @@ module.exports = {
     '<rootDir>/examples/official-storybook',
   ],
   transform: {
-    '^.+\\.stories\\.[jt]sx?$': '@storybook/addon-storyshots/injectFileName',
+    '^.+\\.stories\\.[jt]sx?$': '<rootDir>/scripts/storyshots-jest-transform.js',
     '^.+\\.[jt]sx?$': '<rootDir>/scripts/babel-jest.js',
     '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
   },
