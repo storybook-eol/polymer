@@ -73,7 +73,7 @@ const tasks = {
     name: `Output coverage reports ${chalk.gray('(coverage)')}`,
     defaultValue: false,
     option: '--coverage',
-    extraParam: '--coverage',
+    extraParam: '--coverage --passWithNoTests',
   }),
   runInBand: createOption({
     name: `Run all tests serially in the current process ${chalk.gray('(runInBand)')}`,
